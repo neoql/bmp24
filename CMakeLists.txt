@@ -4,7 +4,12 @@ project(BMP24)
 
 LINK_LIBRARIES("m")
 
-set (SRC_LIST main.c bitmap.c gaussian.c mat.c)
+set (LIB_SRC bitmap.c gaussian.c mat.c)
+set (APP_SRC main.c)
 
-add_executable(bmp24 ${SRC_LIST})
+add_library(libbmp24 SHARED ${LIB_SRC})
+set_target_properties(libbmp24 PROPERTIES OUTPUT_NAME "bmp24")
+
+add_executable(bmp24 ${APP_SRC})
+target_link_libraries(bmp24 libbmp24)
 
