@@ -6,15 +6,15 @@ ColorMat CreateColorMat(unsigned int width, unsigned int height)
 {
 	ColorMat mat;
 	int i;
-    Color **content;
+	Color **content;
 
-    mat = malloc(sizeof(_ColorMat));
+	mat = malloc(sizeof(_ColorMat));
 	content = (Color**)malloc(height * sizeof(Color*));
 	for (i = 0; i < height; i++) {
 		content[i] = malloc(sizeof(Color) * width);
 	}
 
-    mat->content = content;
+	mat->content = content;
 	mat->width = width;
 	mat->height = height;
 

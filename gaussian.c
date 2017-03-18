@@ -1,7 +1,7 @@
 #include <math.h>
 #include "gaussian.h"
 
-#define PI 3.1415926
+#define PI 3.141592653589793
 
 
 double GetWeight(int x, int y, int radius)
