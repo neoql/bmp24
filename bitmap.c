@@ -12,8 +12,6 @@ Bitmap LoadBmp(char *path)
 	Bitmap bmp;
 	int fp;
 	unsigned char *img;
-	char buf[1024];
-	int len;
 
 
 	bmp = (Bitmap) malloc(sizeof(_Bitmap));
@@ -36,6 +34,10 @@ Bitmap LoadBmp(char *path)
 	read(fp, &bmp->info_header.biYPelsPerMeter, 4);
 	read(fp, &bmp->info_header.biClrUsed, 4);
 	read(fp, &bmp->info_header.biClrImportant, 4);
+
+	if (bmp->info_header.biSizeImage == 0) {
+		bmp->info_header.biSizeImage = bmp->file_header.bfSize - bmp->file_header.bfOffBits;
+	}
 
 	img = (unsigned char*) malloc(bmp->info_header.biSizeImage);
 	read(fp, img, bmp->info_header.biSizeImage);
