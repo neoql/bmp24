@@ -49,7 +49,7 @@ Bitmap LoadBmp(char *path);
 Bitmap CloneBmp(Bitmap bmp);
 void DesdroyBmp(Bitmap bmp);
 void PrintHeaders(Bitmap bmp);
-Color GetPointColor(Bitmap bmp, unsigned int x, unsigned int y);
+Color GetPointColor(Bitmap bmp, int x, int y);
 void SetPointColor(Bitmap bmp, unsigned int x, unsigned int y, Color color);
 void SaveBmp(Bitmap bmp, char* path);
 void MkBmpGray(Bitmap bmp);

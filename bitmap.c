@@ -98,7 +98,7 @@ void PrintHeaders(Bitmap bmp)
 }
 
 
-Color GetPointColor(Bitmap bmp, unsigned int x, unsigned int y)
+Color GetPointColor(Bitmap bmp, int x, int y)
 {
 	Color color;
 	int width, height;
@@ -109,6 +109,13 @@ Color GetPointColor(Bitmap bmp, unsigned int x, unsigned int y)
 	width = bmp->info_header.biWidth;
 	height = bmp->info_header.biHeight;
 	p_img = bmp->image;
+
+	if (x < 0) {
+		x = width - x;
+	}
+	if (y < 0) {
+		y = height - y;
+	}
 
 	line_index = (width * 3 + width % 4) * y;
 	p_img += line_index;

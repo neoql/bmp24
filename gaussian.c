@@ -1,6 +1,5 @@
 #include <math.h>
 #include "gaussian.h"
-#include <stdio.h>
 
 #define PI 3.1415926
 
@@ -110,8 +109,8 @@ Bitmap GsTrans(Bitmap bmp, int radius)
 
 	weight_mat = GetWeightMat(radius);
 
-	for (i = radius; i < img->info_header.biWidth - radius; i++) {
-		for (j = radius; j < img->info_header.biHeight - radius; j++) {
+	for (i = 0; i < img->info_header.biWidth; i++) {
+		for (j = 0; j < img->info_header.biHeight; j++) {
 			color_mat = GetColorMat(i, j, radius, bmp);
 			color = GetBlurColor(color_mat, weight_mat);
 			SetPointColor(img, i, j, color);
