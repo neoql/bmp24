@@ -57,7 +57,8 @@ Bitmap CloneBmp(Bitmap bmp)
 
 	new_bmp->file_header = bmp->file_header;
 	new_bmp->info_header = bmp->info_header;
-	memcpy(new_bmp->image, bmp->image, bmp->info_header.biSizeImage);
+	memcpy(img, bmp->image, bmp->info_header.biSizeImage);
+	new_bmp->image = img;
 
 	return new_bmp;
 }
