@@ -9,8 +9,8 @@ double GetWeight(int x, int y, int radius)
 	double sigma;
 	double weight;
 
-	sigma = (radius * 2 + 1) / 2;
-	weight = (1 / (2 * PI * sigma * sigma)) * pow(exp(1), ((-(x * x + y * y)) / ((2 * sigma)*(2 * sigma))));
+	sigma = radius + 0.5;
+    weight = (1 / (2 * PI * sigma * sigma)) * exp((-(x * x + y * y)) / (2 * sigma * sigma));
 
 	return weight;
 }
@@ -28,7 +28,7 @@ WeightMat GetWeightMat(int radius)
 	mat = CreateWeightMat(radius * 2 + 1, radius * 2 + 1);
 	for (i = 0; i < mat->width; i++) {
 		for (j = 0; j < mat->height; j++) {
-			weight = GetWeight(i - radius, radius - i, radius);
+			weight = GetWeight(i - radius, radius - j, radius);
 			sum += weight;
 			mat->content[j][i] = weight;
 		}
