@@ -11,12 +11,7 @@
     </ADDITIONAL_GENERATION_ENVIRONMENT>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ed41d353-7769-4502-87fe-91b522ce09cf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bitmap.c" afterPath="$PROJECT_DIR$/bitmap.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gaussian.c" afterPath="$PROJECT_DIR$/gaussian.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.c" afterPath="$PROJECT_DIR$/main.c" />
-    </list>
+    <list default="true" id="ed41d353-7769-4502-87fe-91b522ce09cf" name="Default" comment="" />
     <ignored path="bmp24.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -334,7 +329,7 @@
       <workItem from="1489817610956" duration="660000" />
       <workItem from="1489818277760" duration="1225000" />
       <workItem from="1489819508629" duration="185000" />
-      <workItem from="1489819774607" duration="2226000" />
+      <workItem from="1489819774607" duration="2249000" />
     </task>
     <task id="LOCAL-00001" summary="修改了矩阵&#10;">
       <created>1489820581400</created>
@@ -350,11 +345,18 @@
       <option name="project" value="LOCAL" />
       <updated>1489820679722</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="完成高斯模糊">
+      <created>1489822019865</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1489822019865</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5841000" />
+    <option name="totallyTimeSpent" value="5864000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="18" width="1366" height="750" extended-state="6" />
@@ -394,7 +396,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="修改了矩阵&#10;" />
     <MESSAGE value="修改cmake" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改cmake" />
+    <MESSAGE value="完成高斯模糊" />
+    <option name="LAST_COMMIT_MESSAGE" value="完成高斯模糊" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
