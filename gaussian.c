@@ -17,16 +17,16 @@ double GetWeight(int x, int y, int radius)
 }
 
 
-Mat GetWeightMat(int radius)
+WeightMat GetWeightMat(int radius)
 {
-	Mat mat;
+	WeightMat mat;
 	int i, j;
 	double sum;
 	double weight;
 
 	sum = 0;
 
-	mat = CreateMat(radius * 2 + 1, radius * 2 + 1, sizeof(double));
+	mat = CreateWeightMat(radius * 2 + 1, radius * 2 + 1, sizeof(double));
 	for (i = 0; i < mat->width; i++) {
 		for (j = 0; j < mat->height; j++) {
 			weight = GetWeight(i - radius, radius - i, radius);

@@ -5,11 +5,19 @@ typedef struct {
 	void** content;
 	unsigned int width;
 	unsigned int height;
-} _Mat, *Mat;
+} _ColorMat, *ColorMat;
+
+typedef struct {
+	void** content;
+	unsigned int width;
+	unsigned int height;
+} _WeightMat, *WeightMat;
 
 
-Mat CreateMat(unsigned int width, unsigned int height, unsigned int size);
-void DesdroyMat(Mat mat);
+ColorMat CreateColorMat(unsigned int width, unsigned int height);
+void DesdroyColorMat(ColorMat mat);
+ColorMat CreateWeightMat(unsigned int width, unsigned int height);
+void DesdroyWeightMat(ColorMat mat);
 
 #endif //_MAT_H
 

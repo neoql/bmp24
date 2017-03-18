@@ -3,16 +3,16 @@
 #include "string.h"
 
 
-Mat CreateMat(unsigned int width, unsigned int height, unsigned int size)
+ColorMat CreateColorMat(unsigned int width, unsigned int height)
 {
-	Mat mat;
+	ColorMat mat;
 	int i;
     void **content;
 
-    mat = malloc(sizeof(_Mat));
+    mat = malloc(sizeof(_ColorMat));
 	content = (void**)malloc(height * sizeof(void*));
 	for (i = 0; i < height; i++) {
-		content[i] = malloc(size * width);
+		content[i] = malloc(sizeof() * width);
 	}
 
     mat->content = content;
@@ -23,7 +23,7 @@ Mat CreateMat(unsigned int width, unsigned int height, unsigned int size)
 }
 
 
-void DesdroyMat(Mat mat)
+void DesdroyColorMat(ColorMat mat)
 {
 	int i;
 
