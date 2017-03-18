@@ -1,14 +1,17 @@
 #ifndef _MAT_H
 #define _MAT_H
 
+
+#include "bitmap.h"
+
 typedef struct {
-	void** content;
+	Color** content;
 	unsigned int width;
 	unsigned int height;
 } _ColorMat, *ColorMat;
 
 typedef struct {
-	void** content;
+	double ** content;
 	unsigned int width;
 	unsigned int height;
 } _WeightMat, *WeightMat;
@@ -16,8 +19,8 @@ typedef struct {
 
 ColorMat CreateColorMat(unsigned int width, unsigned int height);
 void DesdroyColorMat(ColorMat mat);
-ColorMat CreateWeightMat(unsigned int width, unsigned int height);
-void DesdroyWeightMat(ColorMat mat);
+WeightMat CreateWeightMat(unsigned int width, unsigned int height);
+void DesdroyWeightMat(WeightMat mat);
 
 #endif //_MAT_H
 

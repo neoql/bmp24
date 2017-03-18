@@ -1,6 +1,7 @@
 #include <math.h>
 #include <string.h>
 #include "gaussian.h"
+#include "mat.h"
 
 #define PI 3.1415926
 
@@ -26,20 +27,20 @@ WeightMat GetWeightMat(int radius)
 
 	sum = 0;
 
-	mat = CreateWeightMat(radius * 2 + 1, radius * 2 + 1, sizeof(double));
+	mat = CreateWeightMat(radius * 2 + 1, radius * 2 + 1);
 	for (i = 0; i < mat->width; i++) {
 		for (j = 0; j < mat->height; j++) {
 			weight = GetWeight(i - radius, radius - i, radius);
 			sum += weight;
-			memcpy(mat->content[j] + i, &weight, sizeof(double));
+			mat->content[j][i] = weight;
 		}
 	}
 
 	for (i = 0; i < mat->width; i++) {
 		for (j = 0; j < mat->height; j++) {
-			memcpy(&weight, mat->content[j] + i, sizeof(double));
+			weight = mat->content[j][i];
 			weight /= sum;
-			memcpy(mat->content[j] + i, &weight, sizeof(double));
+			mat->content[j][i] = weight;
 		}
 	}
 
@@ -47,9 +48,9 @@ WeightMat GetWeightMat(int radius)
 }
 
 
-Mat GetColorMat(int x, int y, int radius, Bitmap bmp)
+ColorMat GetColorMat(int x, int y, int radius, Bitmap bmp)
 {
-	Mat mat;
+	ColorMat mat;
 	int startX, startY, len;
 	int i, j;
 	int count;
@@ -60,12 +61,13 @@ Mat GetColorMat(int x, int y, int radius, Bitmap bmp)
 	startY = y - radius;
 	len = radius * 2 + 1;
 
-	mat = CreateMat(radius * 2 + 1, radius * 2 + 1, sizeof(Color));
+	mat = CreateColorMat(radius * 2 + 1, radius * 2 + 1);
 
 	for (i = startX; i < startX + len; i++) {
 		for (j = startY; j < startY + len; j++) {
 			color = GetPointColor(bmp, i, j);
-			memcpy((Color*)mat->content[j] + i, &color, sizeof(Color));
+			mat->content[count % len][count / len] = color;
+			count++;
 		}
 	}
 
@@ -73,7 +75,7 @@ Mat GetColorMat(int x, int y, int radius, Bitmap bmp)
 }
 
 
-Color GetBlurColor(Mat color_mat, Mat weight_mat)
+Color GetBlurColor(ColorMat color_mat, WeightMat weight_mat)
 {
 	Color color, tmp;
 	int i, j;
@@ -85,8 +87,8 @@ Color GetBlurColor(Mat color_mat, Mat weight_mat)
 
 	for (i = 0; i < color_mat->width; i++) {
 		for (j = 0; j < color_mat->height; j++) {
-			memcpy(&tmp, color_mat->content[j] + i, sizeof(Color));
-			memcpy(&weight, weight_mat->content[j] + i, sizeof(double));
+			tmp = color_mat->content[j][i];
+			weight = weight_mat->content[j][i];
 			color.r += tmp.r * weight;
 			color.g += tmp.g * weight;
 			color.b += tmp.b * weight;
@@ -101,7 +103,8 @@ Bitmap GsTrans(Bitmap bmp, int radius)
 {
 	Bitmap img;
 	int i, j;
-	Mat weight_mat, color_mat;
+	WeightMat weight_mat;
+	ColorMat color_mat;
 	Color color;
 
 	img = CloneBmp(bmp);
@@ -113,11 +116,11 @@ Bitmap GsTrans(Bitmap bmp, int radius)
 			color_mat = GetColorMat(i, j, radius, bmp);
 			color = GetBlurColor(color_mat, weight_mat);
 			SetPointColor(bmp, i, j, color);
-			DesdroyMat(color_mat);
+			DesdroyColorMat(color_mat);
 		}
 	}
 
-	DesdroyMat(weight_mat);
+	DesdroyWeightMat(weight_mat);
 	return img;
 }
 
