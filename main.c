@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 	bmp = LoadBmp(argv[1]);
 	PrintHeaders(bmp);
 
-	dest = GsTrans(bmp, atoi(argv[3]));
+	dest = GsTrans(bmp, 5);
 
 	SaveBmp(dest, argv[2]);
 

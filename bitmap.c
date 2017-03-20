@@ -156,7 +156,6 @@ void SaveBmp(Bitmap bmp, char* path)
 {
 	int fp;
 
-	printf("%s\n", path);
 	fp = open(path, O_WRONLY | O_CREAT);
 
 

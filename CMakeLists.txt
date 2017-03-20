@@ -4,7 +4,7 @@ project(BMP24)
 
 LINK_LIBRARIES("m")
 
-set (LIB_SRC bitmap.c gaussian.c mat.c)
+set (LIB_SRC bitmap.c gaussian.c)
 set (APP_SRC main.c)
 
 add_library(libbmp24 SHARED ${LIB_SRC})

@@ -1,124 +1,146 @@
-#include <math.h>
 #include "gaussian.h"
+#include <math.h>
+#include <stdlib.h>
 
-#define PI 3.141592653589793
+
+#define PI 3.1415926
 
 
-double GetWeight(int x, int y, int radius)
+static double GetWeight(int x, double sigma)
 {
-	double sigma;
 	double weight;
 
-	sigma = radius + 0.5;
-    weight = (1 / (2 * PI * sigma * sigma)) * exp((-(x * x + y * y)) / (2 * sigma * sigma));
+	weight = (1 / (pow(2 * PI, 0.5) * sigma)) * exp(- (x * x) / (2 * sigma * sigma));
 
 	return weight;
 }
 
 
-WeightMat GetWeightMat(int radius)
+static double* GetWeightArray(double sigma, int radius)
 {
-	WeightMat mat;
-	int i, j;
+	int len;
+	double* wa;
+	int i;
 	double sum;
-	double weight;
-
-	sum = 0;
-
-	mat = CreateWeightMat(radius * 2 + 1, radius * 2 + 1);
-	for (i = 0; i < mat->width; i++) {
-		for (j = 0; j < mat->height; j++) {
-			weight = GetWeight(i - radius, radius - j, radius);
-			sum += weight;
-			mat->content[j][i] = weight;
-		}
-	}
-
-	for (i = 0; i < mat->width; i++) {
-		for (j = 0; j < mat->height; j++) {
-			weight = mat->content[j][i];
-			weight /= sum;
-			mat->content[j][i] = weight;
-		}
-	}
-
-	return mat;
-}
 
 
-ColorMat GetColorMat(int x, int y, int radius, Bitmap bmp)
-{
-	ColorMat mat;
-	int startX, startY, len;
-	int i, j;
-	int count;
-	Color color;
-
-	count = 0;
-	startX = x - radius;
-	startY = y - radius;
 	len = radius * 2 + 1;
+	wa = malloc(sizeof(double) * len);
 
-	mat = CreateColorMat(radius * 2 + 1, radius * 2 + 1);
-
-	for (i = startX; i < startX + len; i++) {
-		for (j = startY; j < startY + len; j++) {
-			color = GetPointColor(bmp, i, j);
-			mat->content[count % len][count / len] = color;
-			count++;
-		}
+	for (i = 0; i < len; i++) {
+		wa[i] = GetWeight(i - radius, sigma);
+		sum += wa[i];
 	}
 
-	return mat;
+	for (i = 0; i < len; i++) {
+		wa[i] /= sum;
+	}
+
+	return wa;
 }
 
 
-Color GetBlurColor(ColorMat color_mat, WeightMat weight_mat)
+static Color* GetColorArray(Bitmap bmp, int x, int y, int radius, int direct)
 {
-	Color color, tmp;
-	int i, j;
-	double weight;
+	Color* ca;
+	int len;
+	int i;
 
+	len = radius * 2 + 1;
+	ca = malloc(sizeof(Color) * len);
+
+	for (i = 0; i < len; i++) {
+		if (direct) {
+			// H
+			ca[i] = GetPointColor(bmp, x + i, y);
+		} else {
+			// V
+			ca[i] = GetPointColor(bmp, x, y + i);
+		}
+	}
+
+	return ca;
+}
+
+
+static Color GetBlurColor(Color* ca, double* wa, int radius)
+{
+	Color color;
+	int i;
+	int len;
+
+	len = radius * 2 + 1;
 	color.r = 0;
 	color.g = 0;
 	color.b = 0;
 
-	for (i = 0; i < color_mat->width; i++) {
-		for (j = 0; j < color_mat->height; j++) {
-			tmp = color_mat->content[j][i];
-			weight = weight_mat->content[j][i];
-			color.r += tmp.r * weight;
-			color.g += tmp.g * weight;
-			color.b += tmp.b * weight;
-		}
+	for (i = 0; i < len; i++) {
+		color.r += ca[i].r * wa[i];
+		color.g += ca[i].g * wa[i];
+		color.b += ca[i].b * wa[i];
 	}
 
 	return color;
 }
 
 
-Bitmap GsTrans(Bitmap bmp, int radius)
+static void GsHTrans(Bitmap dest, Bitmap src, double sigma, int radius)
 {
-	Bitmap img;
-	int i, j;
-	WeightMat weight_mat;
-	ColorMat color_mat;
+	int x, y;
+	double* wa;
+	Color* ca;
 	Color color;
 
-	img = CloneBmp(bmp);
+	wa = GetWeightArray(sigma, radius);
 
-	weight_mat = GetWeightMat(radius);
+	for (x = radius; x < src->info_header.biWidth - radius; x++) {
+		for (y = radius; y < src->info_header.biHeight - radius; y++) {
+			ca = GetColorArray(src, x, y, radius, 1);
+			color = GetBlurColor(ca, wa, radius);
+			SetPointColor(dest, x, y, color);
+			free(ca);
+		}
+	}
+	free(wa);
+}
 
-	for (i = 0; i < img->info_header.biWidth; i++) {
-		for (j = 0; j < img->info_header.biHeight; j++) {
-			color_mat = GetColorMat(i, j, radius, bmp);
-			color = GetBlurColor(color_mat, weight_mat);
-			SetPointColor(img, i, j, color);
-			DesdroyColorMat(color_mat);
+
+static void GsVTrans(Bitmap dest, Bitmap src, double sigma, int radius)
+{
+	int x, y;
+	double* wa;
+	Color* ca;
+	Color color;
+
+	wa = GetWeightArray(sigma, radius);
+
+	for (x = radius; x < src->info_header.biWidth - radius; x++) {
+		for (y = radius; y < src->info_header.biHeight - radius; y++) {
+			ca = GetColorArray(src, x, y, radius, 0);
+			color = GetBlurColor(ca, wa, radius);
+			SetPointColor(dest, x, y, color);
+			free(ca);
 		}
 	}
 
-	DesdroyWeightMat(weight_mat);
-	return img;
+}
+
+
+Bitmap GsTrans(Bitmap bmp, double sigma)
+{
+	Bitmap tmp, dest;
+	int radius;
+
+	radius = (int) ceil(sigma * 3);
+	tmp = CloneBmp(bmp);
+
+	GsHTrans(tmp, bmp, sigma, radius);
+
+	dest = CloneBmp(tmp);
+	GsVTrans(dest, tmp, sigma, radius);
+
+	DesdroyBmp(tmp);
+
+	return dest;
 }
 
