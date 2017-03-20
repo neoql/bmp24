@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 
 Bitmap LoadBmp(char *path)
@@ -66,7 +67,7 @@ Bitmap CloneBmp(Bitmap bmp)
 }
 
 
-void DesdroyBmp(Bitmap bmp)
+void DestroyBmp(Bitmap bmp)
 {
 	free(bmp->image);
 	free(bmp);
@@ -142,6 +143,13 @@ void SetPointColor(Bitmap bmp, unsigned int x, unsigned int y, Color color)
 	height = bmp->info_header.biHeight;
 	p_img = bmp->image;
 
+    if (x >= width) {
+        x -= width;
+    }
+    if (y >= height) {
+        y -= height;
+    }
+
 	line_index = (width * 3 + width % 4) * y;
 	p_img += line_index;
 	p_img += (x * 3);
@@ -155,6 +163,7 @@ void SetPointColor(Bitmap bmp, unsigned int x, unsigned int y, Color color)
 void SaveBmp(Bitmap bmp, char* path)
 {
 	int fp;
+	int size;
 
 	fp = open(path, O_WRONLY | O_CREAT);
 
@@ -179,6 +188,7 @@ void SaveBmp(Bitmap bmp, char* path)
 
 	write(fp, bmp->image, bmp->info_header.biSizeImage);
 
+	fchmod(fp, S_IREAD | S_IWRITE);
 	close(fp);
 }
 

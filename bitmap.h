@@ -47,7 +47,7 @@ typedef struct {
 
 Bitmap LoadBmp(char *path);
 Bitmap CloneBmp(Bitmap bmp);
-void DesdroyBmp(Bitmap bmp);
+void DestroyBmp(Bitmap bmp);
 void PrintHeaders(Bitmap bmp);
 Color GetPointColor(Bitmap bmp, int x, int y);
 void SetPointColor(Bitmap bmp, unsigned int x, unsigned int y, Color color);

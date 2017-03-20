@@ -1,6 +1,5 @@
 #include "bitmap.h"
 #include "gaussian.h"
-#include <stdlib.h>
 
 
 int main(int argc, char* argv[])
@@ -14,8 +13,10 @@ int main(int argc, char* argv[])
 
 	SaveBmp(dest, argv[2]);
 
-	DesdroyBmp(bmp);
-	DesdroyBmp(dest);
+	PrintHeaders(dest);
+
+    	DestroyBmp(bmp);
+	DestroyBmp(dest);
 
 	return 0;
 }

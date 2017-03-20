@@ -21,7 +21,7 @@ static double* GetWeightArray(double sigma, int radius)
 	int len;
 	double* wa;
 	int i;
-	double sum;
+	double sum = 0;
 
 
 	len = radius * 2 + 1;
@@ -48,6 +48,14 @@ static Color* GetColorArray(Bitmap bmp, int x, int y, int radius, int direct)
 
 	len = radius * 2 + 1;
 	ca = malloc(sizeof(Color) * len);
+
+    if (direct) {
+        // H
+        x -= radius;
+    } else {
+        // V
+        y -= radius;
+    }
 
 	for (i = 0; i < len; i++) {
 		if (direct) {
@@ -93,8 +101,8 @@ static void GsHTrans(Bitmap dest, Bitmap src, double sigma, int radius)
 
 	wa = GetWeightArray(sigma, radius);
 
-	for (x = radius; x < src->info_header.biWidth - radius; x++) {
-		for (y = radius; y < src->info_header.biHeight - radius; y++) {
+	for (x = 0; x < src->info_header.biWidth - 0; x++) {
+		for (y = 0; y < src->info_header.biHeight - 0; y++) {
 			ca = GetColorArray(src, x, y, radius, 1);
 			color = GetBlurColor(ca, wa, radius);
 			SetPointColor(dest, x, y, color);
@@ -114,15 +122,15 @@ static void GsVTrans(Bitmap dest, Bitmap src, double sigma, int radius)
 
 	wa = GetWeightArray(sigma, radius);
 
-	for (x = radius; x < src->info_header.biWidth - radius; x++) {
-		for (y = radius; y < src->info_header.biHeight - radius; y++) {
+	for (x = 0; x < src->info_header.biWidth - 0; x++) {
+		for (y = 0; y < src->info_header.biHeight - 0; y++) {
 			ca = GetColorArray(src, x, y, radius, 0);
 			color = GetBlurColor(ca, wa, radius);
 			SetPointColor(dest, x, y, color);
 			free(ca);
 		}
 	}
-
+	free(wa);
 }
 
 
@@ -132,14 +140,14 @@ Bitmap GsTrans(Bitmap bmp, double sigma)
 	int radius;
 
 	radius = (int) ceil(sigma * 3);
-	tmp = CloneBmp(bmp);
 
+	tmp = CloneBmp(bmp);
 	GsHTrans(tmp, bmp, sigma, radius);
 
 	dest = CloneBmp(tmp);
 	GsVTrans(dest, tmp, sigma, radius);
 
-	DesdroyBmp(tmp);
+    DestroyBmp(tmp);
 
 	return dest;
 }
