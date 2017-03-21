@@ -111,11 +111,12 @@ Color GetPointColor(Bitmap bmp, int x, int y)
 	height = bmp->info_header.biHeight;
 	p_img = bmp->image;
 
-	if (x < 0) {
-		x = width - x;
-	}
-	if (y < 0) {
-		y = height - y;
+	if (x < 0 || y < 0 || x >= width || y >= height) {
+//		x = width - x;
+		color.r = 0;
+		color.g = 0;
+		color.b = 0;
+		return color;
 	}
 
 	line_index = (width * 3 + width % 4) * y;
@@ -142,13 +143,6 @@ void SetPointColor(Bitmap bmp, unsigned int x, unsigned int y, Color color)
 	width = bmp->info_header.biWidth;
 	height = bmp->info_header.biHeight;
 	p_img = bmp->image;
-
-    if (x >= width) {
-        x -= width;
-    }
-    if (y >= height) {
-        y -= height;
-    }
 
 	line_index = (width * 3 + width % 4) * y;
 	p_img += line_index;

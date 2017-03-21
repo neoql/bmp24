@@ -40,6 +40,31 @@ static double* GetWeightArray(double sigma, int radius)
 }
 
 
+static double* GetWeightSubArray(double sigma, int radius, int start, int end)
+{
+    double *wa;
+    int i;
+    double sum = 0;
+
+    wa = malloc(sizeof(double) * (radius * 2 + 1));
+
+    for (i = 0; i < radius * 2 + 1; i++) {
+        wa[i] = 0;
+    }
+
+    for (i = start; i < end; i++) {
+        wa[i] = GetWeight(i - radius, sigma);
+        sum += wa[i];
+    }
+
+    for (i = start; i < end; i++) {
+        wa[i] /= sum;
+    }
+
+    return wa;
+}
+
+
 static Color* GetColorArray(Bitmap bmp, int x, int y, int radius, int direct)
 {
 	Color* ca;
@@ -95,19 +120,45 @@ static Color GetBlurColor(Color* ca, double* wa, int radius)
 static void GsHVTrans(Bitmap dest, Bitmap src, double sigma, int radius, int direct)
 {
 	int x, y;
-	double* wa;
+	double* wa, *wsa;
 	Color* ca;
 	Color color;
 
 	wa = GetWeightArray(sigma, radius);
 
 	for (x = 0; x < src->info_header.biWidth; x++) {
+        if (direct) {
+            if (x < radius) {
+                wsa = GetWeightSubArray(sigma, radius, radius - x, radius * 2);
+            } else if (x >= src->info_header.biWidth - radius) {
+                wsa = GetWeightSubArray(sigma, radius, 0, radius + src->info_header.biWidth - x - 1);
+            } else {
+                wsa = wa;
+            }
+        }
+
 		for (y = 0; y < src->info_header.biHeight; y++) {
+            if (direct == 0) {
+                if (y < radius) {
+                    wsa = GetWeightSubArray(sigma, radius, radius - y, radius * 2);
+                } else if (y >= src->info_header.biHeight - radius) {
+                    wsa = GetWeightSubArray(sigma, radius, 0, radius + src->info_header.biHeight - y - 1);
+                } else {
+                    wsa = wa;
+                }
+            }
+
 			ca = GetColorArray(src, x, y, radius, direct);
-			color = GetBlurColor(ca, wa, radius);
+			color = GetBlurColor(ca, wsa, radius);
 			SetPointColor(dest, x, y, color);
 			free(ca);
+            if (wsa != wa && direct == 0) {
+                free(wsa);
+            }
 		}
+        if (wsa != wa && direct) {
+            free(wsa);
+        }
 	}
 	free(wa);
 }
