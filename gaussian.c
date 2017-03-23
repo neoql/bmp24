@@ -17,7 +17,7 @@ static double GetWeight(int x, double sigma)
 }
 
 
-static double* GetWeightSubArray(double sigma, int radius, int start, int end)
+static double* GetWeightArray(double sigma, int radius, int start, int end)
 {
     	double *wa;
     	int i;
@@ -106,7 +106,7 @@ static void GsHTrans(Bitmap dest, Bitmap src, double sigma, int radius)
     	Color color;
         int start, end;
 
-    	wa = GetWeightSubArray(sigma, radius, 0, radius * 2);
+    	wa = GetWeightArray(sigma, radius, 0, radius * 2);
 
     	for (x = 0; x < src->info_header.biWidth; x++) {
                 if (x < radius || x >= src->info_header.biWidth - radius) {
@@ -118,7 +118,7 @@ static void GsHTrans(Bitmap dest, Bitmap src, double sigma, int radius)
                         if (x >= src->info_header.biWidth - radius) {
                                 end = radius + src->info_header.biWidth - x - 1;
                         }
-                        wsa = GetWeightSubArray(sigma, radius, start, end);
+                        wsa = GetWeightArray(sigma, radius, start, end);
                 } else {
                         wsa = wa;
                 }
@@ -147,7 +147,7 @@ static void GsVTrans(Bitmap dest, Bitmap src, double sigma, int radius)
     	Color color;
         int start, end;
 
-        wa = GetWeightSubArray(sigma, radius, 0, radius * 2);
+        wa = GetWeightArray(sigma, radius, 0, radius * 2);
 
     	for (y = 0; y < src->info_header.biHeight; y++) {
                 if (y < radius || y >= src->info_header.biHeight - radius) {
@@ -159,7 +159,7 @@ static void GsVTrans(Bitmap dest, Bitmap src, double sigma, int radius)
                         if (y >= src->info_header.biHeight - radius) {
                                 end = radius + src->info_header.biHeight - y - 1;
                         }
-                        wsa = GetWeightSubArray(sigma, radius, start, end);
+                        wsa = GetWeightArray(sigma, radius, start, end);
                 } else {
                         wsa = wa;
                 }
