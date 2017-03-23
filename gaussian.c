@@ -43,26 +43,26 @@ static double* GetWeightArray(double sigma, int radius)
 
 static double* GetWeightSubArray(double sigma, int radius, int start, int end)
 {
-    double *wa;
-    int i;
-    double sum = 0;
+    	double *wa;
+    	int i;
+    	double sum = 0;
 
-    wa = malloc(sizeof(double) * (radius * 2 + 1));
+    	wa = malloc(sizeof(double) * (radius * 2 + 1));
 
-    for (i = 0; i < radius * 2 + 1; i++) {
-        wa[i] = 0;
-    }
+    	for (i = 0; i < radius * 2 + 1; i++) {
+        	wa[i] = 0;
+    	}
 
-    for (i = start; i < end; i++) {
-        wa[i] = GetWeight(i - radius, sigma);
-        sum += wa[i];
-    }
+    	for (i = start; i < end; i++) {
+        	wa[i] = GetWeight(i - radius, sigma);
+        	sum += wa[i];
+    	}
 
-    for (i = start; i < end; i++) {
-        wa[i] /= sum;
-    }
+    	for (i = start; i < end; i++) {
+        	wa[i] /= sum;
+    	}
 
-    return wa;
+    	return wa;
 }
 
 
@@ -75,13 +75,13 @@ static Color* GetColorArray(Bitmap bmp, int x, int y, int radius, int direct)
 	len = radius * 2 + 1;
 	ca = malloc(sizeof(Color) * len);
 
-    if (direct) {
-        // H
-        x -= radius;
-    } else {
-        // V
-        y -= radius;
-    }
+    	if (direct) {
+        	// H
+        	x -= radius;
+    	} else {
+        	// V
+        	y -= radius;
+    	}
 
 	for (i = 0; i < len; i++) {
 		if (direct) {
@@ -102,7 +102,7 @@ static Color GetBlurColor(Color* ca, double* wa, int radius)
 	Color color;
 	int i;
 	int len;
-    double r, g, b;
+    	double r, g, b;
 
 	len = radius * 2 + 1;
 	r = 0;
@@ -114,9 +114,9 @@ static Color GetBlurColor(Color* ca, double* wa, int radius)
 		g += ca[i].g * wa[i];
 		b += ca[i].b * wa[i];
 	}
-    color.r = (uchar)(int)r;
-    color.g = (uchar)(int)g;
-    color.b = (uchar)(int)b;
+    	color.r = (uchar)(int)r;
+    	color.g = (uchar)(int)g;
+    	color.b = (uchar)(int)b;
 
 	return color;
 }
@@ -124,68 +124,68 @@ static Color GetBlurColor(Color* ca, double* wa, int radius)
 
 static void GsHTrans(Bitmap dest, Bitmap src, double sigma, int radius)
 {
-    int x, y;
-    double* wa, *wsa;
-    Color* ca;
-    Color color;
+    	int x, y;
+    	double* wa, *wsa;
+    	Color* ca;
+    	Color color;
 
-    wa = GetWeightArray(sigma, radius);
+    	wa = GetWeightArray(sigma, radius);
 
-    for (x = 0; x < src->info_header.biWidth; x++) {
-        if (x < radius) {
-            wsa = GetWeightSubArray(sigma, radius, radius - x, radius * 2);
-        } else if (x >= src->info_header.biWidth - radius) {
-            wsa = GetWeightSubArray(sigma, radius, 0, radius + src->info_header.biWidth - x - 1);
-        } else {
-            wsa = wa;
-        }
+    	for (x = 0; x < src->info_header.biWidth; x++) {
+        	if (x < radius) {
+            		wsa = GetWeightSubArray(sigma, radius, radius - x, radius * 2);
+        	} else if (x >= src->info_header.biWidth - radius) {
+           		 wsa = GetWeightSubArray(sigma, radius, 0, radius + src->info_header.biWidth - x - 1);
+        	} else {
+            		wsa = wa;
+        	}
 
-        for (y = 0; y < src->info_header.biHeight; y++) {
+        	for (y = 0; y < src->info_header.biHeight; y++) {
 
-            ca = GetColorArray(src, x, y, radius, 1);
-            color = GetBlurColor(ca, wsa, radius);
-            SetPointColor(dest, x, y, color);
-            free(ca);
+            		ca = GetColorArray(src, x, y, radius, 1);
+            		color = GetBlurColor(ca, wsa, radius);
+            		SetPointColor(dest, x, y, color);
+            		free(ca);
 
-        }
-        if (wsa != wa) {
-            free(wsa);
-        }
-    }
-    free(wa);
+        	}
+        	if (wsa != wa) {
+            		free(wsa);
+        	}
+    	}
+    	free(wa);
 }
 
 
 static void GsVTrans(Bitmap dest, Bitmap src, double sigma, int radius)
 {
-    int x, y;
-    double* wa, *wsa;
-    Color* ca;
-    Color color;
+    	int x, y;
+    	double* wa, *wsa;
+    	Color* ca;
+    	Color color;
 
-    wa = GetWeightArray(sigma, radius);
+    	wa = GetWeightArray(sigma, radius);
 
-    for (y = 0; y < src->info_header.biHeight; y++) {
-        if (y < radius) {
-            wsa = GetWeightSubArray(sigma, radius, radius - y, radius * 2);
-        } else if (y >= src->info_header.biHeight - radius) {
-            wsa = GetWeightSubArray(sigma, radius, 0, radius + src->info_header.biHeight - y - 1);
-        } else {
-            wsa = wa;
-        }
-        for (x = 0; x < src->info_header.biWidth; x++) {
+    	for (y = 0; y < src->info_header.biHeight; y++) {
+        	if (y < radius) {
+            		wsa = GetWeightSubArray(sigma, radius, radius - y, radius * 2);
+        	} else if (y >= src->info_header.biHeight - radius) {
+            		wsa = GetWeightSubArray(sigma, radius, 0, radius + src->info_header.biHeight - y - 1);
+        	} else {
+            		wsa = wa;
+        	}
+        	for (x = 0; x < src->info_header.biWidth; x++) {
 
-            ca = GetColorArray(src, x, y, radius, 0);
-            color = GetBlurColor(ca, wsa, radius);
-            SetPointColor(dest, x, y, color);
-            free(ca);
+            		ca = GetColorArray(src, x, y, radius, 0);
+            		color = GetBlurColor(ca, wsa, radius);
+            		SetPointColor(dest, x, y, color);
+            		free(ca);
 
-        }
-        if (wsa != wa) {
-            free(wsa);
-        }
-    }
-    free(wa);
+        	}
+        	if (wsa != wa) {
+            		free(wsa);
+        	}
+    	}
+    	free(wa);
 }
 
 
