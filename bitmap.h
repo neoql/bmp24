@@ -2,6 +2,18 @@
 #define _BITMAP_H
 
 
+
+#ifdef _WIN32
+#ifdef libbmp24_EXPORTS
+#define BMP_API __declspec(dllexport)
+#else
+#define BMP_API __declspec(dllimport)
+#endif
+#else
+#define BMP_API
+#endif
+
+
 typedef unsigned char uchar;
 typedef unsigned short WORD;
 typedef unsigned int DWORD;
@@ -45,14 +57,14 @@ typedef struct {
 
 
 
-Bitmap LoadBmp(char *path);
-Bitmap CloneBmp(Bitmap bmp);
-void DestroyBmp(Bitmap bmp);
-void PrintHeaders(Bitmap bmp);
-Color GetPointColor(Bitmap bmp, int x, int y);
-void SetPointColor(Bitmap bmp, unsigned int x, unsigned int y, Color color);
-void SaveBmp(Bitmap bmp, char* path);
-void MkBmpGray(Bitmap bmp);
+extern BMP_API Bitmap LoadBmp(char *path);
+extern BMP_API Bitmap CloneBmp(Bitmap bmp);
+extern BMP_API void DestroyBmp(Bitmap bmp);
+extern BMP_API void PrintHeaders(Bitmap bmp);
+extern BMP_API Color GetPointColor(Bitmap bmp, int x, int y);
+extern BMP_API void SetPointColor(Bitmap bmp, unsigned int x, unsigned int y, Color color);
+extern BMP_API void SaveBmp(Bitmap bmp, char* path);
+extern BMP_API void MkBmpGray(Bitmap bmp);
 
 
 #endif //_BITMAP_H
