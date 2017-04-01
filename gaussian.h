@@ -4,7 +4,7 @@
 #include "bitmap.h"
 
 
-Bitmap GsTrans(Bitmap bmp, double sigma);
+extern BMP_API Bitmap GsTrans(Bitmap bmp, double sigma);
 
 #endif //_GAUSSIAN_H
 

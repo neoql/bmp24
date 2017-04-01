@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.5.1)
 
 project(BMP24)
 
-LINK_LIBRARIES("m")
+if(UNIX)
+    LINK_LIBRARIES("m")
+endif()
 
 set (LIB_SRC bitmap.c gaussian.c)
 set (APP_SRC main.c)
