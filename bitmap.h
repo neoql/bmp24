@@ -15,30 +15,30 @@
 
 
 typedef unsigned char uchar;
-typedef unsigned short WORD;
-typedef unsigned int DWORD;
+typedef unsigned short ushort;
+typedef unsigned int uint;
 
 typedef struct {
-	WORD bfType;
-	DWORD bfSize;
-	DWORD bfReserved;
-	DWORD bfOffBits;
+	ushort bfType;
+	uint bfSize;
+	uint bfReserved;
+	uint bfOffBits;
 
 } FILE_HEADER;
 
 
 typedef struct {
-	DWORD biSize;
-	DWORD biWidth;
-	DWORD biHeight;
-	WORD biPlanes;
-	WORD biBitCount;
-	DWORD biCompression;
-	DWORD biSizeImage;
-	DWORD biXPelsPerMeter;
-	DWORD biYPelsPerMeter;
-	DWORD biClrUsed;
-	DWORD biClrImportant;
+	uint biSize;
+	uint biWidth;
+	uint biHeight;
+	ushort biPlanes;
+	ushort biBitCount;
+	uint biCompression;
+	uint biSizeImage;
+	uint biXPelsPerMeter;
+	uint biYPelsPerMeter;
+	uint biClrUsed;
+	uint biClrImportant;
 } INFO_HEADER;
 
 
