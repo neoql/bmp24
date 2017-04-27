@@ -90,9 +90,9 @@ static Color GetBlurColor(Color* ca, double* wa, int radius)
 		g += ca[i].g * wa[i];
 		b += ca[i].b * wa[i];
 	}
-    	color.r = (uchar)(int)r;
-    	color.g = (uchar)(int)g;
-    	color.b = (uchar)(int)b;
+    	color.r = (uchar)r;
+    	color.g = (uchar)g;
+    	color.b = (uchar)b;
 
 	return color;
 }

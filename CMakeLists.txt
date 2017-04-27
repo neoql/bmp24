@@ -6,12 +6,20 @@ if(UNIX)
     LINK_LIBRARIES("m")
 endif()
 
-set (LIB_SRC bitmap.c gaussian.c)
-set (APP_SRC main.c)
+set(BMP_LIB_SRC bitmap.c bitmap.h)
+set(GAUS_LIB_SRC gaussian.c gaussian.h)
+set(MED_LIB_SRC median.c median.h)
+set(APP_SRC main.c)
 
-add_library(libbmp24 SHARED ${LIB_SRC})
+add_library(libbmp24 SHARED ${BMP_LIB_SRC})
 set_target_properties(libbmp24 PROPERTIES OUTPUT_NAME "bmp24")
 
+add_library(libgaus SHARED ${GAUS_LIB_SRC})
+set_target_properties(libgaus PROPERTIES OUTPUT_NAME "gaussian")
+
+add_library(libmed SHARED ${MED_LIB_SRC})
+set_target_properties(libmed PROPERTIES OUTPUT_NAME "median")
+
 add_executable(bmp24 ${APP_SRC})
-target_link_libraries(bmp24 libbmp24)
+target_link_libraries(bmp24 libbmp24 libgaus libmed)
 

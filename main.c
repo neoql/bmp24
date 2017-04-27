@@ -1,5 +1,5 @@
 #include "bitmap.h"
-#include "gaussian.h"
+#include "median.h"
 #include <stdlib.h>
 
 
@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 	bmp = LoadBmp(argv[1]);
 	PrintHeaders(bmp);
 
-	dest = GsTrans(bmp, atof(argv[3]));
+	dest = MedianFilter(bmp, atoi(argv[3]));
 
 	SaveBmp(dest, argv[2]);
 
