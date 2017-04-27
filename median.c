@@ -29,8 +29,9 @@ static Color GetMedianRGB(int x, int y, int radius, Bitmap bmp)
         Color color;
         int width, height;
         int xstart, ystart;
-        int *r, *g, *b, *gray;
+        int *r, *g, *b;
         int i, j;
+        int m, length;
 
         width = height = radius * 2 + 1;
         xstart = x - radius;
@@ -67,9 +68,13 @@ static Color GetMedianRGB(int x, int y, int radius, Bitmap bmp)
         sort(g, width * height);
         sort(b, width * height);
 
-        color.r = (uchar) r[radius];
-        color.g = (uchar) g[radius];
-        color.b = (uchar) b[radius];
+        length = width * height;
+
+        m = length % 2 ? length / 2 + 1: length / 2;
+
+        color.r = (uchar) r[m - 1];
+        color.g = (uchar) g[m - 1];
+        color.b = (uchar) b[m - 1];
 
         free(r);
         free(g);
