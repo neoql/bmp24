@@ -28,25 +28,25 @@ static Color GetMedianRGB(int x, int y, int radius, Bitmap bmp)
 {
         Color color;
         int width, height;
-        int xstart, ystart;
+        int xoffset, yoffset;
         int *r, *g, *b;
         int i, j;
         int m, length;
 
         width = height = radius * 2 + 1;
-        xstart = x - radius;
-        ystart = y - radius;
+        xoffset = x - radius;
+        yoffset = y - radius;
 
         if (x < radius) {
                 width -= radius;
-                xstart += radius;
+                xoffset += radius;
         } else if (x + radius >= bmp->info_header.biWidth) {
                 width -= (x + radius - bmp->info_header.biWidth + 1);
         }
 
         if (y < radius) {
                 height -= radius;
-                ystart += radius;
+                yoffset += radius;
         } else if (y + radius >= bmp->info_header.biHeight) {
                 height -= (y + radius - bmp->info_header.biHeight + 1);
         }
@@ -57,7 +57,7 @@ static Color GetMedianRGB(int x, int y, int radius, Bitmap bmp)
 
         for (i = 0; i < width; i++) {
                 for (j = 0; j < height; j++) {
-                        color = GetPointColor(bmp, i + xstart, j + ystart);
+                        color = GetPointColor(bmp, i + xoffset, j + yoffset);
                         r[j * width + i] = color.r;
                         g[j * width + i] = color.g;
                         b[j * width + i] = color.b;
