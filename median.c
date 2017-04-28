@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 
+/* 冒泡排序 */
 static void sort(int *array, int length)
 {
         int i, j;
@@ -37,14 +38,14 @@ static Color GetMedianRGB(int x, int y, int radius, Bitmap bmp)
         xoffset = x - radius;
         yoffset = y - radius;
 
-        if (x < radius) {
+        if (x < radius) {               // 向前超出边界
                 width -= radius;
                 xoffset += radius;
         } else if (x + radius >= bmp->info_header.biWidth) {
                 width -= (x + radius - bmp->info_header.biWidth + 1);
         }
 
-        if (y < radius) {
+        if (y < radius) {               // 向后超出边界
                 height -= radius;
                 yoffset += radius;
         } else if (y + radius >= bmp->info_header.biHeight) {
