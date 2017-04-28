@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 	bmp = LoadBmp(argv[1]);
 	PrintHeaders(bmp);
 
-	dest = MedianFilter(bmp, atoi(argv[3]));
+	dest = MkNoise(bmp);
 
 	SaveBmp(dest, argv[2]);
 

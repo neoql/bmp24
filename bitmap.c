@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 
 Bitmap LoadBmp(char *path)
@@ -203,3 +204,27 @@ void MkBmpGray(Bitmap bmp)
         }
 }
 
+
+
+Bitmap MkNoise(Bitmap bmp)
+{
+        Bitmap dest;
+        int i, x, y;
+        long sum;
+        Color color;
+
+        dest = CloneBmp(bmp);
+        srand((unsigned int) time(NULL));
+        sum = dest->info_header.biWidth * dest->info_header.biHeight / 30;
+        color.r = 255;
+        color.g =255;
+        color.b = 255;
+
+        for (i = 0; i < sum; i++) {
+                x = rand() % dest->info_header.biWidth;
+                y = rand() % dest->info_header.biHeight;
+                SetPointColor(dest, x, y, color);
+        }
+
+        return dest;
+}

@@ -65,6 +65,7 @@ extern BMP_API Color GetPointColor(Bitmap bmp, int x, int y);
 extern BMP_API void SetPointColor(Bitmap bmp, unsigned int x, unsigned int y, Color color);
 extern BMP_API void SaveBmp(Bitmap bmp, char* path);
 extern BMP_API void MkBmpGray(Bitmap bmp);
+extern BMP_API Bitmap MkNoise(Bitmap bmp);
 
 
 #endif //_BITMAP_H
