@@ -1,0 +1,5 @@
+﻿    正在创建库 E:/projects/bmp24/build/Debug/median.lib 和对象 E:/projects/bmp24/build/Debug/median.exp
+median.obj : error LNK2019: 无法解析的外部符号 __imp__CloneBmp，该符号在函数 _MedianFilter 中被引用
+median.obj : error LNK2019: 无法解析的外部符号 __imp__GetPointColor，该符号在函数 _GetMedianRGB 中被引用
+median.obj : error LNK2019: 无法解析的外部符号 __imp__SetPointColor，该符号在函数 _MedianFilter 中被引用
+E:\projects\bmp24\build\Debug\median.dll : fatal error LNK1120: 3 个无法解析的外部命令

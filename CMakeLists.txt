@@ -16,9 +16,11 @@ set_target_properties(libbmp24 PROPERTIES OUTPUT_NAME "bmp24")
 
 add_library(libgaus SHARED ${GAUS_LIB_SRC})
 set_target_properties(libgaus PROPERTIES OUTPUT_NAME "gaussian")
+target_link_libraries(libgaus libbmp24)
 
 add_library(libmed SHARED ${MED_LIB_SRC})
 set_target_properties(libmed PROPERTIES OUTPUT_NAME "median")
+target_link_libraries(libmed libbmp24)
 
 add_executable(bmp24 ${APP_SRC})
 target_link_libraries(bmp24 libbmp24 libgaus libmed)

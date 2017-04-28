@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 
 	PrintHeaders(dest);
 
-    	DestroyBmp(bmp);
+	DestroyBmp(bmp);
 	DestroyBmp(dest);
 
 	return 0;
